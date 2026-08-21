@@ -1,0 +1,39 @@
+name: System Report 
+on: push
+
+jobs:
+    system-report:
+        runs-on: ubuntu-latest
+        steps:
+        - name : OS name
+          run: uname -a |
+        - name : Kernel version
+          run: uname -r
+        - name : disk usage
+          run: df -h
+        - name : current date and time 
+          run: date
+        - name : installing tree
+          run: sudo apt-get install tree -y
+        - name : directory structure
+          run: tree -L 2
+    tool-check:
+        runs-on: ubuntu-latest
+        steps:
+        - name : install jq
+          run: sudo apt-get install jq -y
+        - name : create report.json
+          run: |
+            echo '{ "tool1": "installed" }' > report.json
+            echo '{ "tool2": "installed" }' >> report.json
+            echo '{ "tool3": "installed" }' >> report.json
+        - name : reading value
+          run: cat report.json | jq '.tool1'
+        - name : version check
+          run: |
+            echo "checking versions of python3, git and jq"
+            echo "python3 version: $(python3 --version)"
+            echo "git version: $(git --version)"
+            echo "jq version: $(jq --version)"
+        - name : complete 
+          run: echo "Report complete"
