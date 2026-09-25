@@ -1,0 +1,47 @@
+name:  Student Repository Check
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  build-artifact-key: app-${{ github.sha }} 
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Read Student details from file
+        id: student-details
+        run: |
+          echo "$(cat student.txt)" >> $GITHUB_OUTPUT
+    
+      - name: Current Date 
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Display Branch Name
+        id: branch
+        run:  ${{ github.ref }}
+
+      - name: Verify text file
+        run: ls -la student.txt > report.txt
+
+      - name: Number of lines in student.txt
+        run: wc -l student.txt
+
+      - name: Search a file 
+        run: grep GitHub student.txt
+      
+      - name: Upload report files
+        uses: actions/upload-artifact@v7
+        with:
+          name: student-report
+          path: .github/workflows
+      
