@@ -1,8 +1,10 @@
 name: Campus Event Manager Validation
+
 on:
   push:
     branches:
       - main
+
   pull_request:
     types:
       - opened
@@ -10,25 +12,43 @@ on:
       - synchronize
     branches:
       - main
-  workflow_dispatch: null
+
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 24.x
+          cache: npm
+          cache-dependency-path: react-app/package-lock.json
+
       - name: Files list
-        run: ls
+        run: ls -la
+
+      - name: React App Files
+        run: ls -la
+        working-directory: ./react-app
+
       - name: Install Dependencies
         run: npm ci
+        working-directory: ./react-app
+
       - name: Run Unit Tests
         run: npm test
+        working-directory: ./react-app
+
   validate-application:
     name: Validate Application
     runs-on: ubuntu-latest
+
     steps:
-      - run: 'echo "Workflow triggered by: ${{ github.event_name }}"'
+      - name: Show Trigger
+        run: 'echo "Workflow triggered by: ${{ github.event_name }}"'
