@@ -28,7 +28,7 @@ jobs:
 
       - name: Display Branch Name
         id: branch
-        run:  ${{ github.ref }}
+        run: echo "::set-output name=branch:: ${{ github.ref }}"
 
       - name: Verify text file
         run: ls -la student.txt > report.txt
