@@ -26,9 +26,9 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Display Branch Name
-        id: branch
-        run: echo "::set-output name=branch:: ${{ github.ref }}"
+    #   - name: Display Branch Name
+    #     id: branch
+    #     run: echo "::set-output name=branch:: ${{ github.ref }}"
 
       - name: Verify text file
         run: ls -la student.txt > report.txt
